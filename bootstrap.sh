@@ -112,7 +112,7 @@ do
 done
 cycle=${cycle}"\" opt\n
 do\n
-\tcase \"\$opt\" in\
+\tcase \"\$opt\" in\n
 \th|\?)\n
 \t\tshow_help\n
 \t\t;;\n
