@@ -10,3 +10,10 @@ Example: sudo ./bootstrap.sh -a start.sh -n 2 -t /home/user/killer_bash_script
 		-t <TARGET_DIR>: Indicate the target directory (Default: Undefined).
 
 ```
+This will create the following scripts and data structure:
+```
+/home/user/killer_bash_script/
+ |-- sources/
+ |-- sources/extra.sh
+ |-- start.sh
+```
