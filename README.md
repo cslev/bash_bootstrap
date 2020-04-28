@@ -17,3 +17,50 @@ This will create the following scripts and data structure:
     |-- sources/extra.sh
  |-- start.sh
 ```
+
+And your final script will look like this:
+```
+#!/bin/bash
+ 
+ source sources/extra.sh
+ 
+ 
+function show_help 
+ { 
+ 	c_print "Green" "This script does ...!"
+ 	c_print "Bold" "Example: sudo ./asd.sh "
+ 	c_print "Bold" "\t\t-a <ARG1>: set ARG1 here (Default: ???)."
+ 	c_print "Bold" "\t\t-b <ARG2>: set ARG1 here (Default: ???)."
+ 	exit
+ }
+
+ARG1=""
+ARG2=""
+
+
+while getopts "h?a:b:" opt
+ do
+ 	case "$opt" in	h|\?)
+ 		show_help
+ 		;;
+ 	a)
+ 		ARG1=$OPTARG
+ 		;;
+ 	b)
+ 		ARG2=$OPTARG
+ 		;;
+ 
+ 	*)
+ 		show_help
+ 		;;
+ 	esac
+ done
+
+
+if [ -z $ARG1 ] || [ -z $ARG2 ]
+ then
+ 	c_print "Red" "Undefined arguments!"
+ 	show_help
+ fi
+
+```
