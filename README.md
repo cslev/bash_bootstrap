@@ -14,6 +14,6 @@ This will create the following scripts and data structure:
 ```
 /home/user/killer_bash_script/
  |-- sources/
- |-- sources/extra.sh
+    |-- sources/extra.sh
  |-- start.sh
 ```
