@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source sources/extra.sh
+
+mydir="$(dirname "$0")"
+source $mydir/sources/extra.sh
 
 function show_help
 {
