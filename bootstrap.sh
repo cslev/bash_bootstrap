@@ -8,8 +8,8 @@ function show_help
 {
   c_print "Green" "This scripts bootstraps a new BASH project!"
   c_print "Bold" "Example: sudo ./bootstrap.sh -a start.sh -n 2 -t /home/user/killer_bash_script"
-  c_print "Bold" "\t\t-a <SCRIPT_ALIAS>: Indicate the name of the script. Max no. is 10! (Default: Undefined)."
-  c_print "Bold" "\t\t-n <NUMBER_OF_ARGUMENTS>: Indicate how many number of arguments your BASH script will use (Default: Undefined)."
+  c_print "Bold" "\t\t-a <SCRIPT_ALIAS>: Indicate the name of the script. (Default: Undefined)."
+  c_print "Bold" "\t\t-n <NUMBER_OF_ARGUMENTS>: Indicate how many number of arguments your BASH script will use. Max no. is 10! (Default: Undefined)."
   c_print "Bold" "\t\t-t <TARGET_DIR>: Indicate the target directory (Default: Undefined)."
   exit
 }
@@ -75,7 +75,8 @@ args=(
 FINAL_SCRIPT="
 #!/bin/bash\n
 \n
-source sources/extra.sh\n
+ROOT=\"\$(dirname \"\$0\")\"\n
+source \$ROOT/sources/extra.sh\n
 \n
 "
 
