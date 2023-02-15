@@ -15,7 +15,8 @@ colors=(
   [Black]='\033[0;30m'        # Black
   [Red]='\033[0;31m'          # Red
   [Green]='\033[0;32m'        # Green
-  [Yellow]='\033[0;33m'       # Yellow
+  [Yellow]='\033[0;93m'       # Yellow
+  [Orange]='\033[0;33m'       # Orange
   [Blue]='\033[0;34m'         # Blue
   [Purple]='\033[0;35m'       # Purple
   [Cyan]='\033[0;36m'         # Cyan
@@ -24,7 +25,8 @@ colors=(
   [BBlack]='\033[1;30m'       # Black
   [BRed]='\033[1;31m'         # Red
   [BGreen]='\033[1;32m'       # Green
-  [BYellow]='\033[1;33m'      # Yellow
+  [BYellow]='\033[1;93m'      # Yellow
+  [Orange]='\033[1;33m'       # Orange
   [BBlue]='\033[1;34m'        # Blue
   [BPurple]='\033[1;35m'      # Purple
   [BCyan]='\033[1;36m'        # Cyan
@@ -33,7 +35,8 @@ colors=(
   [UBlack]='\033[4;30m'       # Black
   [URed]='\033[4;31m'         # Red
   [UGreen]='\033[4;32m'       # Green
-  [UYellow]='\033[4;33m'      # Yellow
+  [UYellow]='\033[4;93m'      # Yellow
+  [UOrange]='\033[4;33m'      # Orange
   [UBlue]='\033[4;34m'        # Blue
   [UPurple]='\033[4;35m'      # Purple
   [UCyan]='\033[4;36m'        # Cyan
@@ -66,7 +69,16 @@ function c_print ()
   then
     echo -e $text_to_print # newline at the end
   else
-    echo -en $text_to_print # NO newline at the end
+    #this is the case when we want to add status like [DONE] at the end of the line after
+    #a function has finished. Hence, we pad the original text with whitespaces accordingly
+    size=${#text_to_print}
+    cols=$(echo $(/usr/bin/tput cols))
+    fixed_status_length=6 #e.g., [DONE], [FAIL]
+    pad_size=`expr $cols - $size - $fixed_status_length` #the final size of the padding
+    #we use printf to print the padding, instead of for loops and echo
+    pad=$(printf "%*s" "$pad_size")
+
+    echo -en "${text_to_print}${pad}" # NO newline at the end
 	fi
 
 }
