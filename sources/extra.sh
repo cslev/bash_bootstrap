@@ -83,15 +83,25 @@ function c_print ()
 
 }
 
-
+#check return value of a call
+#print [FAIL] and exit if not 0 with the returned value
+#print [DONE]
 function check_retval ()
 {
   retval=$1
   if [ $retval -ne 0 ]
   then
     c_print "BRed" "[FAIL]"
-    exit -1
+    exit $retval
   else
     c_print "BGreen" "[DONE]"
   fi
+}
+
+#get random number between the given numbers' inclusive range 
+function get_random ()
+{
+  FROM=$1
+  TO=$2
+  echo $(($FROM + $RANDOM % $TO))
 }

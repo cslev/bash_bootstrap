@@ -1,6 +1,4 @@
 #!/bin/bash
-
-
 mydir="$(dirname "$0")"
 source $mydir/sources/extra.sh
 
@@ -88,7 +86,7 @@ then
   rm -rf tmp/tmp_function_help.tpl > /dev/null 2>&1
   for i in $(seq 1 $NUM_ARGS)
   do
-    echo "\tc_print \"Bold\" \"\\\t\\\t-${args[${i}]} <ARG${i}>: set ARG1 here (Default: ???).\"\n" >> tmp/tmp_function_help.tpl
+    echo "\tc_print \"Bold\" \"\\\t-${args[${i}]} <ARG${i}>: set ARG1 here (Default: ???).\"\n" >> tmp/tmp_function_help.tpl
     vars="${vars}ARG${i}=\"\"\n"
   done
 fi
