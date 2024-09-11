@@ -52,8 +52,8 @@ fi
 
 c_print "Blue" "Bootstrapping ${NAME} in ${TARGET_DIR} with ${NUM_ARGS} arguments..."
 mkdir -p $TARGET_DIR
-mkdir -p tmp/
-cp -r sources/ $TARGET_DIR
+mkdir -p $mydir/tmp/
+cp -r $mydir/sources/ $TARGET_DIR
 
 declare -A args
 args=(
@@ -83,23 +83,23 @@ vars=""
 c_print "Blue" "Assembling funtion show_help ()..." 1
 if [ $NUM_ARGS -ge 1 ]
 then
-  rm -rf tmp/tmp_function_help.tpl > /dev/null 2>&1
+  rm -rf $mydir/tmp/tmp_function_help.tpl > /dev/null 2>&1
   for i in $(seq 1 $NUM_ARGS)
   do
-    echo "\tc_print \"Bold\" \"\\\t-${args[${i}]} <ARG${i}>: set ARG1 here (Default: ???).\"\n" >> tmp/tmp_function_help.tpl
+    echo "\tc_print \"Bold\" \"\\\t-${args[${i}]} <ARG${i}>: set ARG1 here (Default: ???).\"\n" >> $mydir/tmp/tmp_function_help.tpl
     vars="${vars}ARG${i}=\"\"\n"
   done
 fi
 
-cat templates/show_help.tpl | sed "s/<APPLICATION_NAME>/${NAME}/g" > tmp/show_help_1
-head -n4 tmp/show_help_1 > tmp/show_help.final
-cat tmp/tmp_function_help.tpl >> tmp/show_help.final
-tail -n2 tmp/show_help_1 >> tmp/show_help.final
+cat $mydir/templates/show_help.tpl | sed "s/<APPLICATION_NAME>/${NAME}/g" > $mydir/tmp/show_help_1
+head -n4 $mydir/tmp/show_help_1 > $mydir/tmp/show_help.final
+cat $mydir/tmp/tmp_function_help.tpl >> $mydir/tmp/show_help.final
+tail -n2 $mydir/tmp/show_help_1 >> $mydir/tmp/show_help.final
 retval=$?
 check_retval $retval
 
 #add help function
-help_function=$(cat tmp/show_help.final)
+help_function=$(cat $mydir/tmp/show_help.final)
 FINAL_SCRIPT="$FINAL_SCRIPT\n${help_function}"
 
 
@@ -138,24 +138,28 @@ c_print "BGreen" "[DONE]"
 
 
 #add variable checking
-c_print "Blue" "Assembling argument checking part..." 1
-check="\nif "
-for i in $(seq 1 $NUM_ARGS)
-do
-  if [ $i -lt $NUM_ARGS ]
-  then
-    check="${check}[ -z \$ARG${i} ] || "
-  else
-    check="${check}[ -z \$ARG${i} ]"
-  fi
-done
-check="${check}\n
-then\n
-\tc_print \"Red\" \"Undefined arguments!\"\n
-\tshow_help\n
-fi\n"
-FINAL_SCRIPT="${FINAL_SCRIPT}\n${check}\n"
-c_print "BGreen" "[DONE]"
-
+if [[ $i -eq 0 ]]
+then
+  c_print "Blue" "No need for any argument existence checking"
+else
+  c_print "Blue" "Assembling argument checking part..." 1
+  check="\nif "
+  for i in $(seq 1 $NUM_ARGS)
+  do
+    if [ $i -lt $NUM_ARGS ]
+    then
+      check="${check}[ -z \$ARG${i} ] || "
+    else
+      check="${check}[ -z \$ARG${i} ]"
+    fi
+  done
+  check="${check}\n
+  then\n
+  \tc_print \"Red\" \"Undefined arguments!\"\n
+  \tshow_help\n
+  fi\n"
+  FINAL_SCRIPT="${FINAL_SCRIPT}\n${check}\n"
+  c_print "BGreen" "[DONE]"
+fi
 echo -e $FINAL_SCRIPT > $TARGET_DIR/$NAME
 c_print "BGreen" "FINISHED!"
